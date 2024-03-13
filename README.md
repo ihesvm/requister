@@ -6,7 +6,7 @@
 ---
 Example 
 ```shell
-$ requister http://example.com/api/ [get is default method to send request]
+$ requister http://example.com/api/ [The default method is GET]
 
 Object {
     "args": Object {},
