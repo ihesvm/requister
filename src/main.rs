@@ -3,14 +3,13 @@ use reqwest::{Response, StatusCode};
 use serde_json;
 
 
-
-async fn send_request(url: String, method: String) {
+async fn send_request(url: String, method: Option<String>) {
     let client = reqwest::Client::new();
-    match method.to_uppercase().as_str() {
-        "GET" => {
+    match method.as_ref().map(String::as_ref) {
+        Some("GET") | None => {
             get_method(client, url).await;
         },
-        "DELETE" => {
+        Some("DELETE") => {
             delete_method(client, url).await;
         }
         _ => {
@@ -24,7 +23,7 @@ async fn send_request(url: String, method: String) {
 #[tokio::main]
 async fn main() {
     let url = std::env::args().nth(1).expect("no url name given");
-    let method = std::env::args().nth(2).expect("no method name given");
+    let method = std::env::args().nth(2);
     send_request(url, method).await;
 
 }
