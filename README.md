@@ -24,8 +24,9 @@ Object {
 ---
 ### TODO
 - [x] Send GET and DELETE method
-- [ ] Add ...
-  - [ ] POST
-  - [ ] PUT
-  - [ ] PATCH
-- [ ] Arguments are added to the POST request with key value data
+- [x] Add ...
+  - [x] POST
+  - [x] PUT
+  - [x] PATCH
+- [x] Arguments are added to the POST request with key value data
+- [ ] Add help text and arguments switch
