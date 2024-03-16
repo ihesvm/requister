@@ -4,6 +4,11 @@
 *simple cli app for send http request*  
 
 ---
+Build Requister ...
+```bash
+$ cargo build --release
+```
+---
 Example 
 ```shell
 $ requister http://example.com/api/ [The default method is GET]
@@ -29,4 +34,5 @@ Object {
   - [x] PUT
   - [x] PATCH
 - [x] Arguments are added to the POST request with key value data
+- [x] Add another status code  
 - [ ] Add help text and arguments switch

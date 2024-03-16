@@ -3,7 +3,6 @@ use colored::Colorize;
 use reqwest::{Response, StatusCode};
 use serde_json;
 
-
 async fn send_request(url: String, method: Option<String>, data: HashMap<String, String>) {
     let client = reqwest::Client::new();
     match method.as_ref().map(String::as_ref) {
@@ -11,7 +10,7 @@ async fn send_request(url: String, method: Option<String>, data: HashMap<String,
             get_method(client, url).await;
         }
         Some("delete") => {
-            delete_method(client, url).await;
+            delete_method(client, url, data).await;
         },
         Some("post") => {
             post_method(client, url, data).await;
@@ -40,19 +39,26 @@ pub fn hash_collect(data: Vec<String>) -> HashMap<String, String> {
 }
 
 #[tokio::main]
+
 async fn main() {
+
+    
+
     let url = std::env::args().nth(1).expect("no url name given");
     let method = std::env::args().nth(2);
     let data: Vec<String> = std::env::args().collect();
 
     let data = hash_collect(data);
 
+
+    
     send_request(url, method, data).await;
+
 }
 
 
-async fn delete_method(client: reqwest::Client, url: String) {
-    let res = client.delete(url).send().await;
+async fn delete_method(client: reqwest::Client, url: String, data: HashMap<String, String>) {
+    let res = client.delete(url).json(&data).send().await;
     match res {
         Ok(res) => {
             response(res).await.unwrap();
@@ -78,6 +84,15 @@ async fn response(res: Response) -> Result<(), Box<dyn std::error::Error>> {
         }
         StatusCode::UNAUTHORIZED => {
             Ok(println!("{}", "UNAUTHORIZED!".red()))
+        },
+        StatusCode::NOT_FOUND => {
+            Ok(println!("{}", "Object Not Found ...".red()))
+        },
+        StatusCode::NO_CONTENT => {
+            Ok(println!("{}", "No Content ...".red()))
+        },
+        StatusCode::BAD_REQUEST => {
+            Ok(println!("{}", "Bad Request ...".red()))
         }
 
         _ => {
